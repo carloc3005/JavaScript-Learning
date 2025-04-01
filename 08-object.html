@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Objects</title>
+	</head>
+	<body>
+		<script>
+			const product = {
+				name: 'Laptop',
+				price: 999.99,
+				available: true,
+				features: ['16GB RAM', '512GB SSD', 'Intel i7'],
+				displayInfo: function() {
+					console.log(`Product: ${this.name}, Price: $${this.price}`);
+				}
+			}
+
+			console.log(localStorage.getItem('message'));
+
+		</script>
+
+		console.log(product.name); // Accessing object property
+		console.log(product['price']); // Accessing object property using bracket notation
+		product.displayInfo(); // Calling object method
+		product.price = 899.99; // Updating object property
+		console.log(product.price); // Accessing updated property
+		product.features.push('NVIDIA GTX 1650'); // Adding to array property
+		console.log(product.features); // Accessing updated array property
+		console.log(product.displayInfo()); // Calling updated method
+
+		connst jsonString = JSON.stringify(product); // Converting object to JSON string
+		console.log(jsonString); // Displaying JSON string
+
+		const parsedObject = JSON.parse(jsonString); // Converting JSON string back to object
+		
+
+	</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Stringify and Parse Example</title>
+</head>
+<body>
+  <script>
+    // Define a simple object
+    const myObject = {
+      name: "Bob",
+      age: 25,
+      job: "Developer"
+    };
+
+    // Convert the object to a JSON string using JSON.stringify
+    const jsonString = JSON.stringify(myObject);
+    console.log("Stringified object:", jsonString);
+
+    // Convert the JSON string back to an object using JSON.parse
+    const parsedObject = JSON.parse(jsonString);
+    console.log("Parsed object:", parsedObject);
+
+    // Display the result using an alert (simple output)
+    alert("Original Object:\n" + jsonString + "\n\nParsed Object:\n" + JSON.stringify(parsedObject, null, 2));
+  </script>
+</body>
+</html>

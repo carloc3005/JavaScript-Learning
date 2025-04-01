@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>localStorage Example</title>
+</head>
+
+<body>
+	<h1>localStorage Demo</h1>
+
+	<script>
+		/*
+		localStorage Explanation:
+		- localStorage is a web storage API that allows websites to store key-value pairs in the browser
+		- Key features of localStorage:
+		  1. Persistent storage: Data remains even after browser is closed
+		  2. Storage limit: Usually around 5-10 MB
+		  3. Synchronous API: Operations happen immediately
+		  4. Same-origin policy: Data is only accessible from the same domain
+		  5. String-only storage: All values are stored as strings
+		
+		Common localStorage methods:
+		- setItem(key, value): Stores a value
+		- getItem(key): Retrieves a value
+		- removeItem(key): Deletes a specific item
+		- clear(): Removes all items
+		- length: Returns number of stored items
+		*/
+
+		// Check if localStorage is available
+		if (typeof localStorage !== 'undefined') {
+			console.log("localStorage is supported!");
+
+			// 1. Saving data: Store a favorite color in localStorage
+			localStorage.setItem('favoriteColor', 'blue');
+			console.log("Saved favoriteColor as 'blue'.");
+
+			// 2. Retrieving data: Get the stored favorite color
+			const color = localStorage.getItem('favoriteColor');
+			console.log("Retrieved favoriteColor:", color);
+
+			// 3. Removing data: Delete the favorite color from localStorage
+			localStorage.removeItem('favoriteColor');
+			console.log("Removed favoriteColor from localStorage.");
+
+			// 4. Confirm removal: Try retrieving again
+			const removedColor = localStorage.getItem('favoriteColor');
+			console.log("After removal, favoriteColor is:", removedColor);
+		} else {
+			console.log("Sorry, your browser does not support localStorage.");
+		}
+
+
+		// Check if localStorage is available
+		if (typeof localStorage !== 'undefined') {
+			console.log("localStorage is supported!");
+
+			// 1. Define an object
+			const person = {
+				name: "Alice",
+				age: 30,
+				city: "New York"
+			};
+
+			// 2. Save the object in localStorage after converting it to a string
+			localStorage.setItem('person', JSON.stringify(person));
+			console.log("Saved person object:", person);
+
+			// 3. Retrieve the object from localStorage and convert it back to an object
+			const retrievedPerson = JSON.parse(localStorage.getItem('person'));
+			console.log("Retrieved person object:", retrievedPerson);
+
+			// 4. Remove the object from localStorage
+			localStorage.removeItem('person');
+			console.log("Removed person from localStorage.");
+
+			// 5. Confirm removal by trying to retrieve it again
+			const removedPerson = localStorage.getItem('person');
+			console.log("After removal, person is:", removedPerson);
+		} else {
+			console.log("Sorry, your browser does not support localStorage.");
+		}
+
+
+	</script>
+</body>
+
+</html>

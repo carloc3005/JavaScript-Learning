@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Heads or Tails</title>
+</head>
+
+<body>
+	<h1>Heads or Tails</h1>
+	<p>Flip a coin</p>
+	<button onClick="flipCoin()">flip</button>
+
+	<script>
+		function flipCoin() {
+			const result = Math.random();
+
+			if (result < 0.5) {
+				return 'Heads';
+			} else {
+				return 'Tails';
+			}
+		}
+
+		alert(flipCoin(''));
+	</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Objects</title>
+	</head>
+	<body>
+		<script>
+			const amazonProject = {
+				product: 'basketball',
+				price: 2095
+			};
+
+			console.log(amazonProject);
+			console.log(amazonProject.product);
+			console.log(amazonProject['price']);
+
+			console.log(amazonProject['price'] += 500);
+			console.log(amazonProject['delivery-time'] = '3 days');
+
+			console.log(amazonProject);
+
+
+			function compare(product1, product2) {
+				return product1.price < product2.price ? product1 : produc2;
+			}
+
+			const product1 = {name: 'Product A', price: 100};
+			const product2 = {name: 'Product B', price: 200};
+
+			const cheaperProduct = compare(product1, product2);
+
+			console.log(`The less expensive product is ${cheaperProduct.name} with a price of $${cheaperProduct.price}. with a price of ${cheaperProduct.price}.`);
+
+			function isSameProduct(product3, product4) {
+				return product3.name === product4.name && product3.price === product4.price;
+			}
+
+			const product3 = {name: 'Pus', price: 100};
+			const product4 = {name: 'Pus', price: 100};
+
+			const isSame = isSameProduct(product3, product4);
+			console.log(`Are the products the same? ${isSame ? 'Yes' : 'No'}`);
+
+			const product5 = {
+				name: 'Carlo Castillo LOves CHELSHEY'
+			};
+
+			console.log(product5.name.toLowerCase());
+
+		</script>
+	</body>
+</html>

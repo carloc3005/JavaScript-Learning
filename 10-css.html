@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>DOM</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		.subscribe-button {
+			border: none;
+			background-color: black;
+			color: white;
+			padding: 10px 15px;
+			font-weight: bold;
+			border-radius: 40px;
+			cursor: pointer;
+		}
+
+		.is-subscribed {
+			background-color: rgb(240, 240, 240);
+			color: black;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Basic subscription button interface -->
+	<p>YouTube Subscribe</p>
+	<button onclick="subscribe()" class="js-subscribe subscribe-button">Subscribe</button>
+	<script>
+		/**
+		 * subscribe: Toggles button text between 'Subscribe' and 'Subscribed'
+		 * 1. Uses querySelector to find button by class
+		 * 2. Checks current button text
+		 * 3. Toggles between states
+		 * NOTE: 
+		 * - Uses innerHTML which could be security risk
+		 * - Could use textContent instead
+		 * - No state persistence (resets on page refresh)
+		 */
+		function subscribe() {
+			// Select the button element with the class 'js-subscribe'
+			const buttonElement = document.querySelector('.js-subscribe');
+
+			// Check the current text of the button and toggle between 'Subscribe' and 'Subscribed'
+			if (buttonElement.innerText === 'Subscribe') {
+				buttonElement.innerText = 'Subscribed';
+				buttonElement.classList.add('is-subscribed');
+			} else {
+				buttonElement.innerText = 'Subscribe';
+				buttonElement.classList.remove('is-subscribed');
+			}
+		}
+	</script>
+</body>
+
+</html>

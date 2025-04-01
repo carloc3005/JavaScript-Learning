@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Rock Paper Scissor</title>
+</head>
+<body>
+    <!-- Main game title -->
+    <h1>Rock Paper Scissor</h1>
+
+    <!-- Game control buttons with onclick event handlers -->
+    <button onclick="playGame('rock')">Rock</button>
+    <button onclick="playGame('paper')">Paper</button>
+    <button onclick="playGame('scissors')">Scissors</button>
+    <button onClick="resetScore()">Reset Score</button>
+
+    <script>
+        // Retrieve the saved score from localStorage and parse it from JSON
+        const score = JSON.parse(localStorage.getItem('score'));
+
+        // Array of possible choices for the computer
+        const choices = ['rock', 'paper', 'scissors'];
+
+        /**
+         * Generates a random choice for the computer
+         * @returns {string} - Returns either 'rock', 'paper', or 'scissors'
+         */
+        function getComputerChoice() {
+            // Generate random index between 0 and 2
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        /**
+         * Main game logic function
+         * @param {string} playerChoice - The player's selection ('rock', 'paper', or 'scissors')
+         */
+        function playGame(playerChoice) {
+            // Get computer's random choice
+            const computerChoice = getComputerChoice();
+            let result;
+
+            // Game logic to determine winner
+            // If choices are the same, it's a tie
+            if (playerChoice === computerChoice) {
+                result = "It's a tie!";
+            } 
+            // Win conditions: rock beats scissors, paper beats rock, scissors beats paper
+            else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                result = "You win!";
+            } 
+            // If not a tie or win, then it's a loss
+            else {
+                result = "You lose!";
+            }
+        }
+
+        /**
+         * Resets the game score by removing it from localStorage
+         */
+        function resetScore() {
+            localStorage.removeItem('score');
+            console.log("Score reset.");
+        }
+
+        // Initialize the score in localStorage with default values
+        localStorage.setItem('score', JSON.stringify({wins: 0, losses: 0, ties: 0})); 
+    </script>
+</body>
+</html>

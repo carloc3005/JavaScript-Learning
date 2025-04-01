@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissor</title>
+</head>
+<body>
+  <!-- Main Game Title -->
+  <h1>Rock Paper Scissor</h1>
+
+  <!-- Buttons for player's moves.
+       Each button calls the playGame function with the respective move when clicked. -->
+  <button onclick="playGame('rock')">Rock</button>
+  <button onclick="playGame('paper')">Paper</button>
+  <button onclick="playGame('scissors')">Scissors</button>
+
+  <!-- Paragraph to display the player's and computer's moves along with the result -->
+  <p class="js-moves"></p>
+  <!-- Paragraph to display the current score -->
+  <p class="js-score"></p>
+  <!-- Button to reset the score -->
+  <button onclick="resetScore()">Reset Score</button>
+
+  <script>
+    // Retrieve the stored score from localStorage.
+    // If there is no score saved, score will be null.
+    let score = JSON.parse(localStorage.getItem('score'));
+
+    // If no score is found in localStorage, initialize score with default values.
+    if (!score) {
+      score = { wins: 0, losses: 0, ties: 0 };
+      localStorage.setItem('score', JSON.stringify(score));
+    }
+
+    // Define the possible moves for the computer.
+    const choices = ['rock', 'paper', 'scissors'];
+
+    /**
+     * Generates a random move for the computer.
+     * @returns {string} A randomly selected move: 'rock', 'paper', or 'scissors'.
+     */
+    function getComputerChoice() {
+      // Generate a random index based on the length of the choices array.
+      const randomIndex = Math.floor(Math.random() * choices.length);
+      // Return the choice at the random index.
+      return choices[randomIndex];
+    }
+
+    /**
+     * Plays a round of the game.
+     * @param {string} playerChoice - The move selected by the player.
+     */
+    function playGame(playerChoice) {
+      // Get a random move for the computer.
+      const computerChoice = getComputerChoice();
+      // Variable to store the result message.
+      let result;
+
+      // Determine the game outcome based on player's and computer's choices.
+      if (playerChoice === computerChoice) {
+        // If both moves are the same, it's a tie.
+        result = "It's a tie!";
+        score.ties++; // Increment tie count.
+      } else if (
+        // Conditions for when the player wins.
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'paper' && computerChoice === 'rock') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper')
+      ) {
+        result = "You win!";
+        score.wins++; // Increment win count.
+      } else {
+        // If it's not a tie or a win, the player loses.
+        result = "You lose!";
+        score.losses++; // Increment loss count.
+      }
+
+      // Save the updated score object back into localStorage.
+      localStorage.setItem('score', JSON.stringify(score));
+
+      // Update the text content of the moves display element with the player's move, 
+      // computer's move, and the result of the round.
+      document.querySelector('.js-moves').textContent =
+        `Your move: ${playerChoice} | Computer move: ${computerChoice} | Result: ${result}`;
+
+      // Update the score display element with the current win, loss, and tie counts.
+      document.querySelector('.js-score').textContent =
+        `Wins: ${score.wins} | Losses: ${score.losses} | Ties: ${score.ties}`;
+    }
+
+    /**
+     * Resets the game score to zero for wins, losses, and ties.
+     */
+    function resetScore() {
+      // Reset the score object.
+      score = { wins: 0, losses: 0, ties: 0 };
+      // Save the reset score into localStorage.
+      localStorage.setItem('score', JSON.stringify(score));
+
+      // Update the score display element to show the reset values.
+      document.querySelector('.js-score').textContent =
+        `Wins: ${score.wins} | Losses: ${score.losses} | Ties: ${score.ties}`;
+      
+      // Optionally clear the moves display element.
+      document.querySelector('.js-moves').textContent = '';
+    }
+
+    // Display the initial score on page load.
+    document.querySelector('.js-score').textContent =
+      `Wins: ${score.wins} | Losses: ${score.losses} | Ties: ${score.ties}`;
+  </script>
+</body>
+</html>
