@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Advance Functions Practice</title>
+</head>
+
+<body>
+    <button onclick="updateButton()" class="js-button">Finish</button>
+
+    <button onclick="SignIn()" class="js-button-signin">Sign In</button>
+
+    <button onclick="addToCart()" class="js-button-addtocart">Add to Cart</button>
+
+    <button onclick="displayMessage()">Add</button>
+
+    <button onclick="stopNotification()">Remove</button>
+
+    <p class="js-message"></p>
+
+    <script>
+        // A simple function that logs the sum of 2 and 3 to the console.
+        const add = function() {
+            console.log(2 + 3);
+        }
+        // Calls the add function twice.
+        add();
+        add();
+
+        // A higher-order function that takes another function (fun) as an argument and executes it twice.
+        function runTwice(fun) {
+            fun();
+            fun();
+        }
+
+        // Calls runTwice with an anonymous function that logs "hello" to the console.
+        runTwice(function() {
+            console.log('hello');
+        });
+
+        // Calls runTwice with the add function.
+        runTwice(add);
+
+        // Function to update the text of the "Finish" button after a delay.
+        function updateButton() {
+            // Selects the button element using its class.
+            const button = document.querySelector('.js-button');
+
+            // Sets a timeout to change the button's text to "Finished" after 1 second.
+            setTimeout(function() {
+                button.innerText = 'Finished';
+            }, 1000);
+        }
+
+        // Function to simulate a "Sign In" process by changing the button's text.
+        function SignIn() {
+            // Selects the "Sign In" button element.
+            const button = document.querySelector('.js-button-signin');
+
+            // Changes the button's text to "Loading..." to indicate the process is starting.
+            button.innerHTML = 'Loading...';
+
+            // Sets a timeout to change the button's text to "Finished" after 1 second.
+            setTimeout(function() {
+                button.innerHTML = 'Finished';
+            }, 1000);
+        }
+
+        // Function to simulate adding an item to a cart by changing the button's text.
+        function addToCart() {
+            // Selects the "Add to Cart" button element.
+            const button = document.querySelector('.js-button-addtocart');
+
+            // Changes the button's text to "Added".
+            button.innerHTML = 'Added';
+
+            // Sets a timeout to reset the button's text back to "Add to Cart" after 2 seconds.
+            setTimeout(function() {
+                button.innerHTML = 'Add to Cart'; // Reset the button text.
+            }, 2000);
+        }
+
+        // Variable to store the timeout ID for the message display.
+        let timeout;
+
+        // Function to display an "Added" message in the paragraph element.
+        function displayMessage() {
+            // Selects the paragraph element where the message will be displayed.
+            const messageElement = document.querySelector('.js-message');
+
+            // Sets the paragraph's content to "Added".
+            messageElement.innerHTML = 'Added';
+
+            // Clears any existing timeout to prevent multiple timeouts from running simultaneously.
+            clearTimeout(timeout);
+
+            // Sets a new timeout to clear the message after 2 seconds.
+            timeout = setTimeout(function() {
+                messageElement.innerHTML = '';
+            }, 2000);
+        }
+
+        // Variable to store the number of new messages for the notification.
+        let message = 2;
+
+        // Variable to store the interval ID for the notification title change.
+        let intervalId;
+
+        // Variable to track whether the notification title change is currently active.
+        let isDisplayingNotification = false;
+
+        // Function to start the notification title change.
+        function displayNotification() {
+            // If the notification is already active, do nothing.
+            if (isDisplayingNotification) {
+                return;
+            }
+            // Sets the notification flag to true.
+            isDisplayingNotification = true;
+
+            // Sets an interval to change the document title every 1 second.
+            intervalId = setInterval(function() {
+                // If the current title is "App", change it to "(message) New Messages".
+                if (document.title === 'App') {
+                    document.title = `(${message}) New Messages`;
+                } else {
+                    // Otherwise, change it back to "App".
+                    document.title = 'App';
+                }
+            }, 1000);
+        }
+
+        // Function to stop the notification title change.
+        function stopNotification() {
+            // Sets the notification flag to false.
+            isDisplayingNotification = false;
+
+            // Clears the interval to stop the title changes.
+            clearInterval(intervalId);
+
+            // Resets the document title to "App".
+            document.title = 'App';
+        }
+    </script>
+</body>
+
+</html>

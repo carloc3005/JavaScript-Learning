@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Advance Functions Part 2</title>
+</head>
+
+<body>
+    <button onClick="" class="js-button">Click</button>
+    <script>
+        // const regular = function (param, param2) {
+        //     console.log('hello');
+        //     return 5;
+        // }
+
+        // const arrowFunction = (param, param2) => {
+        //     console.log('hello');
+        //     return 5;
+        // }
+
+        // arrowFunction();
+
+        // const oneParam = param => {
+        //     console.log(param + 1);
+        // };
+        // oneParam(2);
+
+        // const oneLine = () => 2 + 3;
+        // console.log(oneLine());
+
+        // [
+        //     'make dinner',
+        //     'go to sleep',
+        //     'go to gym',
+        // ].forEach((value, index) => {
+        //     console.log(value, index);
+        // });
+
+        // const object2 = {
+        //     method: () => {
+
+        //     },
+        //     method() {
+
+        //     }
+        // };
+
+        const buttonElement = document.querySelector('.js-button');
+
+        // Define the first event listener
+        const eventListener = () => {
+            console.log('click1');
+        };
+
+        // Add the first event listener
+        buttonElement.addEventListener('click1', eventListener);
+
+        //remove the first event listener
+        buttonElement.removeEventListener('click1', eventListener);
+
+        // Add a second event listener
+        buttonElement.addEventListener('click', () => {
+            console.log('click2');
+        });
+
+    </script>
+</body>
+
+</html>

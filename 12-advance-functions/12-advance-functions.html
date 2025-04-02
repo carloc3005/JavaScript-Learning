@@ -41,11 +41,29 @@
 		//	console.log('hello4');
 		//})
 
-		setTimeout(function () {
-			console.log('timeout'); 
-		}, 3000);
+		// setTimeout(function () {
+		// 	console.log('timeout'); 
+		// }, 3000);
 
-		console.log('next line');
+		// console.log('next line');
+
+		// setInterval(function() {
+		// 	console.log('interval');
+		// }, 3000)
+
+		// console.log('next line 2');
+
+		[
+			'make dinner',
+			'go to sleep',
+			'go to gym',
+		].forEach(function (value, index) {
+			if (value === 'go to gym') {
+				return;
+			}
+			console.log(value);
+			console.log(index);
+		});
 	</script>
 </body>
 

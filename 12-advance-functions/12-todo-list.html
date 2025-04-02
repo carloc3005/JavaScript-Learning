@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Todo List</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<h1>Todo List</h1>
+
+	<!-- Container to display the todo list -->
+	<div class="js-todo-list todo-grid"></div>
+	<div class="todo-input-grid">
+		<!-- Input for new todo item -->
+		<input type="text" placeholder="Todo Name" class="js-name-input name-input">
+		<input type="date" class="js-date-input due-date-input">
+		<button onclick="addTodo()" class="add-todo-button">Add</button>
+	</div>
+	<!-- Link to the external JavaScript file -->
+	<script src="index.js"></script>
+</body>
+
+</html>
