@@ -9,6 +9,7 @@ cart.forEach((cartItem) => {
   const matchingProduct = products.find(product => product.id === productId);
 
   // Ensure matchingProduct exists before proceeding
+  // This prevents errors if the product is not found
   if (!matchingProduct) return;
 
   cartSummaryHTML += `
