@@ -9,7 +9,6 @@ cart.forEach((cartItem) => {
   const matchingProduct = products.find(product => product.id === productId);
 
   // Ensure matchingProduct exists before proceeding
-  // This prevents errors if the product is not found
   if (!matchingProduct) return;
 
   cartSummaryHTML += `
@@ -33,7 +32,7 @@ cart.forEach((cartItem) => {
             <span class="update-quantity-link link-primary">
               Update
             </span>
-            <span class="delete-quantity-link link-primary">
+            <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
               Delete
             </span>
           </div>
@@ -43,7 +42,7 @@ cart.forEach((cartItem) => {
             Choose a delivery option:
           </div>
           <div class="delivery-option">
-            <input type="radio" checked class="delivery-option-input" name="delivery-option-${productId}">
+            <input type="radio" checked class="delivery-option-${matchingProduct.id}" name="delivery-option-${productId}">
             <div>
               <div class="delivery-option-date">
                 Tuesday, June 21
@@ -54,7 +53,7 @@ cart.forEach((cartItem) => {
             </div>
           </div>
           <div class="delivery-option">
-            <input type="radio" class="delivery-option-input" name="delivery-option-${productId}">
+            <input type="radio" class="delivery-option-${matchingProduct.id}" name="delivery-option-${productId}">
             <div>
               <div class="delivery-option-date">
                 Wednesday, June 15
@@ -65,7 +64,7 @@ cart.forEach((cartItem) => {
             </div>
           </div>
           <div class="delivery-option">
-            <input type="radio" class="delivery-option-input" name="delivery-option-${productId}">
+            <input type="radio" class="delivery-option-${matchingProduct.id}" name="delivery-option-${productId}">
             <div>
               <div class="delivery-option-date">
                 Monday, June 13
@@ -81,5 +80,14 @@ cart.forEach((cartItem) => {
   `;
 });
 
+// Place the HTML in the target container
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+
+// Select all elements with the 'js-delete-link' class and add event listeners
+document.querySelectorAll('.js-delete-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+    console.log(productId);
+  });
+});
 
