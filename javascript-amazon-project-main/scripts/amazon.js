@@ -1,12 +1,10 @@
-import { cart, addToCart } from '../data/cart.js';
-import { products } from '../data/products.js';
-import { formatCurrency } from './utils/money.js';
+import {cart} from '../data/cart.js';
 
 let productsHTML = ``;
 
 products.forEach((product) => {
-  const ratingImageValue = Math.round(product.rating.stars * 10 / 5) * 5;
-  productsHTML += `
+    const ratingImageValue = Math.round(product.rating.stars * 10 / 5) * 5;
+    productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image" src="${product.image}">
@@ -24,7 +22,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${formatCurrency(product.priceCents)}
+            $${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
@@ -59,35 +57,51 @@ products.forEach((product) => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-function updateCartQuantity() {
-  let cartQuantity = 0;
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-}
-
-
 document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
-  button.addEventListener('click', () => {
-    const { productId } = button.dataset;
-    addToCart(productId);
-    updateCartQuantity();
+    button.addEventListener('click', () => {
+        const { productId } = button.dataset;
+        let matchingItem;
 
+        // Use the global "cart" array defined in another file.
+        cart.forEach((item) => {
+            if (productId === item.productId) {
+                matchingItem = item;
+            }
+        });
 
-    const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+        // Retrieve the quantity from the associated selector
+        const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+        const quantity = Number(quantitySelector.value);
 
-    // If there's an existing timer, clear it before starting a new one
-    if (addedMessage.timeoutId) {
-      clearTimeout(addedMessage.timeoutId);
-    }
+        if (matchingItem) {
+            matchingItem.quantity += quantity;
+        } else {
+            cart.push({
+                productId,
+                quantity,
+            });
+        }
 
-    addedMessage.classList.add('added-to-cart-visible');
+        let cartQuantity = 0;
+        cart.forEach((item) => {
+            cartQuantity += item.quantity;
+        });
+        
+        document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 
-    // Save the timer identifier on the element so that it can be cleared if needed
-    addedMessage.timeoutId = setTimeout(() => {
-      addedMessage.classList.remove('added-to-cart-visible');
-      delete addedMessage.timeoutId;
-    }, 2000);
-  });
+        const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+
+        // If there's an existing timer, clear it before starting a new one
+        if (addedMessage.timeoutId) {
+            clearTimeout(addedMessage.timeoutId);
+        }
+
+        addedMessage.classList.add('added-to-cart-visible');
+
+        // Save the timer identifier on the element so that it can be cleared if needed
+        addedMessage.timeoutId = setTimeout(() => {
+            addedMessage.classList.remove('added-to-cart-visible');
+            delete addedMessage.timeoutId;
+        }, 2000);
+    });
 });
