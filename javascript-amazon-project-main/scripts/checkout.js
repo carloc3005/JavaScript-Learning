@@ -3,19 +3,26 @@
 // - 'removeFromCart' is used to delete an item from the cart.
 // - 'products' is the full list of available products.
 // - 'formatCurrency' converts prices from cents to a readable format.
-import {cart, removeFromCart} from '../data/cart.js';
-import {products} from '../data/products.js';
-import {formatCurrency} from './utils/money.js';
+import { cart, removeFromCart, updateDeliveryOption } from '../data/cart.js';
+import { products } from '../data/products.js';
+import { formatCurrency } from './utils/money.js';
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import { deliveryOptions } from '../data/deliveryOptions.js';
 
-// Start with an empty string that will hold all the HTML for the order summary.
+// Calculate and log a sample delivery date.
+const today = dayjs();
+const deliveryDate = today.add(7, 'days');
+console.log(deliveryDate.format('dddd, MMMM D'));
+
+// Initialize an empty string to build the order summary HTML.
 let cartSummaryHTML = '';
 
-// For every item in the cart...
+// For every item in the cart, build the HTML including delivery options.
 cart.forEach((cartItem) => {
-  // Get the product ID of this cart item.
+  // Get the product ID for the current cart item.
   const productId = cartItem.productId;
 
-  // Find the product details that match this cart item.
+  // Find matching product details for the cart item.
   let matchingProduct;
   products.forEach((product) => {
     if (product.id === productId) {
@@ -23,15 +30,25 @@ cart.forEach((cartItem) => {
     }
   });
 
-  // Build the HTML for this cart item:
-  // - It shows a (currently hardcoded) delivery date.
-  // - It shows the product image, name, price, and quantity.
-  // - It has options for updating or deleting the item.
-  // - It includes some delivery options as radio buttons.
+  const deliveryOptionId = cartItem.deliveryOptionId;
+
+  let deliveryOption;
+
+  deliveryOptions.forEach((option) => {
+    if (option.id === deliveryOptionId)
+    {
+      deliveryOption = option;
+    }
+  })
+
+  // If desired, pass the product ID to another function.
+  processProduct(matchingProduct.id);
+
+  // Build the HTML for this cart item.
   cartSummaryHTML += `
-    <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+    <div class="cart-item-container js-cart-item-container-${matchingProduct.id} js-delivery=option">
       <div class="delivery-date">
-        Delivery date: Tuesday, June 21
+        Delivery date: ${dayjs().add(deliveryOption.deliveryDays, 'days').format('dddd, MMMM D')}
       </div>
 
       <div class="cart-item-details-grid">
@@ -55,52 +72,74 @@ cart.forEach((cartItem) => {
           </div>
         </div>
 
-        <div class="delivery-options">
-          <div class="delivery-options-title">
-            Choose a delivery option:
-          </div>
-          <div class="delivery-option">
-            <input type="radio" checked class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
-            <div>
-              <div class="delivery-option-date">Tuesday, June 21</div>
-              <div class="delivery-option-price">FREE Shipping</div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input type="radio" class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
-            <div>
-              <div class="delivery-option-date">Wednesday, June 15</div>
-              <div class="delivery-option-price">$4.99 - Shipping</div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input type="radio" class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
-            <div>
-              <div class="delivery-option-date">Monday, June 13</div>
-              <div class="delivery-option-price">$9.99 - Shipping</div>
-            </div>
-          </div>
-        </div>
+        ${deliveryOptionsHTML(matchingProduct.id, cartItem)}
       </div>
     </div>
   `;
 });
 
-// Put all the built HTML into the order summary area of the page.
+// This function generates the HTML for the delivery options given a product ID.
+function deliveryOptionsHTML(productId, cartItem) {
+  let html = `
+    <div class="delivery-options">
+      <div class="delivery-options-title">
+        Choose a delivery option:
+      </div>
+  `;
+  
+  deliveryOptions.forEach((deliveryOption) => {
+    // Calculate the delivery date based on deliveryDays.
+    const deliveryDate = dayjs().add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM D');
+    const priceString = deliveryOption.priceCents === 0 
+      ? 'FREE Shipping' 
+      : `$${formatCurrency(deliveryOption.priceCents)}`;
+
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+    html += `
+      <div class="delivery-option">
+        <input type="radio" ${isChecked ? 'check' : '' } class="delivery-option-input" name="delivery-option-${productId}">
+        <div>
+          <div class="delivery-option-date">${dateString}</div>
+          <div class="delivery-option-price">${priceString}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  return html;
+}
+
+// This is an example of another function accessing the product ID.
+// It receives the same parameter passed to deliveryOptionsHTML.
+function processProduct(productId) {
+  console.log("Processing product with ID:", productId);
+  // Additional processing logic could be implemented here.
+}
+
+// Insert the built HTML into the order summary area.
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
-// For every "Delete" link that was added above...
+// For every "Delete" link added above, attach an event listener.
 document.querySelectorAll('.js-delete-link').forEach((link) => {
-  // When a user clicks "Delete"...
   link.addEventListener('click', () => {
-    // Get the product ID from the link.
+    // Retrieve the product ID from the data attribute.
     const productId = link.dataset.productId;
 
     // Remove the item from the cart data.
     removeFromCart(productId);
 
-    // Find the HTML container for this cart item and remove it from the page.
+    // Find and remove the corresponding HTML element.
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.remove();
+    if (container) {
+      container.remove();
+    }
+  });
+});
+
+document.querySelectorAll('.js-delivery-option').forEach((element) => {
+  element.addEventListener('click', () => {
+    updateDeliveryOption(productId, );
   });
 });
