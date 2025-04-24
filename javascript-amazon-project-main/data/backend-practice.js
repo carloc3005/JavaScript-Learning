@@ -7,4 +7,3 @@ xhr.addEventListener('load', funtion() => {
 
 xhr.open('GET', 'https://supersimplebackend.dev');
 xhr.send();
-xhr.response
